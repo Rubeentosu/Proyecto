@@ -3,3 +3,4 @@ git remote add origin https://github.com/Rubeentosu/Proyecto.git
 git add .
 git commit -m "Un comentario"
 git push --set-upstream origin master
+.
