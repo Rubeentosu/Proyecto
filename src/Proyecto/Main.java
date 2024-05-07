@@ -1,2 +1,8 @@
-package Proyecto;public class Main {
+package Proyecto;
+
+public class Main {
+    public static void main(String[] args) {
+        System.out.println("Prueba");
+        System.out.println("Prueba2");
+    }
 }
