@@ -1,6 +1,14 @@
+INICIADO
 git init
 git remote add origin https://github.com/Rubeentosu/Proyecto.git
+
+AÑADIR
 git add .
 git commit -m "Un comentario"
+
+SUBIR A DISTINTO SITIOS
 git push --set-upstream origin master
+git push --set-upstream origin Ruben
 .
+git checkout Ruben
+git checkout master
