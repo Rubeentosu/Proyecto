@@ -46,8 +46,4 @@ public class Grupo {
                 ", administrador=" + administrador +
                 '}';
     }
-
-    public void añadirGastos(String descripcion, double cantidad, usuario pagador) {
-
-    }
 }

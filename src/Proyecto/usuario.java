@@ -1,13 +1,15 @@
 package Proyecto;
 
+import java.time.LocalDateTime;
 import java.util.InputMismatchException;
 import java.util.Objects;
 import java.util.Scanner;
+import java.util.ArrayList;
 
 public class usuario implements Comparable{
     private static int userID = 1;
     private String name;
-    private  String pass;
+    private String pass;
 
     //Constructor
     public usuario(String name, String pass) {
@@ -131,6 +133,51 @@ public class usuario implements Comparable{
         for (Grupo grupo : grupos) {
             System.out.println(grupo.toString());
         }
+    }
+
+    private ArrayList<Gasto> gastos = new ArrayList<>();
+    // Funcion para añadir en un arrayList un gasto, con los datos pasados por parametros
+    public ArrayList añadirGastos(Grupo grupo, String descripcion, double cantidad, usuario pagador) {
+        if (this.getUserID() != grupo.getAdministrador().getUserID()) {
+            System.out.println("ERROR: No eres el administrador de este grupo");
+            return gastos;
+        }
+
+        Gasto gasto = new Gasto(grupo.getIdGrupo(), descripcion, cantidad, pagador, LocalDateTime.now());
+        gastos.add(gasto);
+
+        return gastos;
+    }
+
+    // Funcion para eliminar un gasto del arrayList
+    public ArrayList<Gasto> eliminarGastos(Grupo grupo) {
+        if (this.getUserID() != grupo.getAdministrador().getUserID()) {
+            System.out.println("ERROR: No eres el administrador de este grupo");
+            return gastos;
+        }
+
+        Scanner sc = new Scanner(System.in);
+        // Pedimos al user la id del gasto
+        System.out.println("Introduce el id del gasto");
+        int idGasto = sc.nextInt();
+
+        // Buscamos en el arrayList si hay un gasto con la id introducida
+        boolean fin = false;
+        for (Gasto gasto : gastos) {
+             if (idGasto == gasto.getId()) {
+                 gastos.remove(idGasto);
+                 fin = true;
+             }
+        }
+
+        // Comprobamos si el programa ha finalizado correctamente
+        if (fin) {
+            System.out.println("El gasto con id " + idGasto + " ha sido eliminado");
+        } else {
+            System.out.println("ERROR: No se ha encontrado ningun gasto con la id" + idGasto);
+        }
+
+        return gastos;
     }
 
 }
