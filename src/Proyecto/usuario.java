@@ -1,6 +1,8 @@
 package Proyecto;
 
+import java.util.ArrayList;
 import java.util.Objects;
+import java.util.Scanner;
 
 public class usuario implements Comparable{
     private int userID = 1;
@@ -64,5 +66,39 @@ public class usuario implements Comparable{
         usuario user =(usuario) obj;
         return this.getName().compareTo(user.getName());
     }
+
+    static ArrayList<Grupo> grupos = new ArrayList<>();
+    public static void crearGrupo(usuario usuario){
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Ingrese el id del grupo: ");
+        int id = sc.nextInt();
+
+        System.out.println("Ingrese el nombre del grupo: ");
+        String nombreGrupo = sc.next();
+
+        Grupo nuevoGrupo= new Grupo(id,nombreGrupo,usuario);
+
+        grupos.add(nuevoGrupo);
+        System.out.println("Grupo '" + nombreGrupo + "' creado por " + usuario);
+    }
+
+    //Eliminar Grupo
+    public static void eliminarGrupo(usuario usuario) {
+        Scanner sc = new Scanner(System.in);
+        int id;
+        System.out.println("Id del grupo que quieres eliminar");
+        id = sc.nextInt();
+        grupos.remove(id);
+        System.out.println("Grupo '" + id + "' eliminado por " + usuario);
+    }
+
+    //Funcion verGrupos
+    public static void verGrupos(){
+        System.out.println("Grupos: ");
+        for (Grupo grupo : grupos) {
+            System.out.println(grupo.toString());
+        }
+    }
+
 
 }
