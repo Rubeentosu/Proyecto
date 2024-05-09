@@ -1,5 +1,6 @@
 package Proyecto;
 
+import java.lang.reflect.Array;
 import java.util.InputMismatchException;
 import java.util.Objects;
 import java.util.Scanner;
@@ -137,24 +138,56 @@ public class usuario implements Comparable{
     //Funcion verGrupos
     public void verGrupos(){
         System.out.println("Grupos: ");
-        for (Grupo grupo : gruposPertenece) {
-            System.out.println(grupo.toString());
+        gruposPertenece.forEach(System.out::println);
+    }
+
+    //Función que añade un usuario a un grupo
+    public boolean addUser(Grupo gr, usuario user, ArrayList<usuario> usuarios){
+        boolean exito = false;
+        //Primero comprobamos que el usuario que hace la función es el administrador del grupo
+        if (this.userID==gr.getIdAdmin()){
+            //Comprobamos que el usuario existe en la base de datos
+            if (!usuarios.contains(user)){
+                throw new InputMismatchException("El usuario no existe");
+            }else {
+                //Si exite, comprobamos si ya forma parte del grupo
+                if (gr.getComponentes().contains(user)) {
+                    throw new RuntimeException("El usuario ya forma parte del grupo");
+                } else {
+                    gr.getComponentes().add(user);
+                    exito = true;
+                }
+            }
+        }else{
+           throw new ArithmeticException("Solo el administrador del grupo puede añadir o eliminar miembros");
         }
+        return exito;
     }
 
-    //Función que permite añadir un gasto a un grupo
-    public void añadirGastos(String nombreGrupo) {
-        if (usuarioPerteneceGrupo(nombreGrupo)){
-            System.out.println("Por favor, introduzca una descripción del gasto");
-            String descripcion = leerCadena();
-            System.out.println("Por favor, introduzca cuanto ha costado");
-            double cantidad  = leerNum();
+    //Función que elimina un usario de un grupo
+    public boolean eliminarUsuario(Grupo gr, usuario user, ArrayList<usuario> usuarios){
+        boolean exito = false;
+        //Primero comprobamos que el usuario que hace la función es el administrador del grupo
+        if (this.userID==gr.getIdAdmin()){
+            //Comprobamos que el usuario existe en la base de datos
+            if (!usuarios.contains(user)){
+                throw new InputMismatchException("El usuario no existe");
+            }else {
+                //Si exite, comprobamos si ya forma parte del grupo
+                if (gr.getComponentes().contains(user)) {
+                    gr.getComponentes().remove(user);
+                    exito = true;
 
-
-            //gastos.add(new Gasto(descripcion, cantidad, this.getUserID()));
-        }else throw new RuntimeException("Usted no pertenece a ese grupo");
-
+                } else {
+                    throw new RuntimeException("El usuario no forma parte del grupo");
+                }
+            }
+        }else{
+            throw new ArithmeticException("Solo el administrador del grupo puede añadir o eliminar miembros");
+        }
+        return exito;
     }
+
     //función que lee una cadena
     public static String leerCadena(){
         Scanner sc = new Scanner(System.in);

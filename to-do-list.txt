@@ -7,3 +7,23 @@ crear clase grupo
 - He creado la clase usuario, he añadido los atributos, constructor, getter/setter, equal, to-string y comparator
 - Por hacer: Añadir throws a contraseña para comprobar que sea correcta, modificar constructor para hacer la id
 constante, añadir métodos
+
+Correcciones que hay que hacer en las Funciones añadirAbono y eliminarAbono de la clase Usuario:
+-En vez de crear un array de gastos en el usuario, se crea solo en el grupo, y cuando añadimos
+un gasto lo metemos en el array de gastos del grupo, no del usuario: ej: grupo1.getGastos().add(gasto);
+- Quizás sería mejor que en vez de meterle las descripciones, id y todas las cosas por parametros, en la misma
+función sea donde se le pidam
+- El la funcion para borrar un gasto, cuando haces el .remove lo haces metiendo idGasto, eso creo que va a dar error
+y debería estar simplemente como gastos.remove(gasto), ya que dentro del for-each has metido que el objeto a borrar
+se llama gasto, no idGasto
+
+10-05-2024 Javi
+- He añadido las funciones añadirUsuario y EliminarUsuario, con control de errores.
+- En la clase grupo he creado como atributos un arrayList de usuarios que contendrá los miembros, así como un array de gastos.
+- Corrección de la forma de asignar un id en el constructor de todas las clases para que todos sean unicos y progresivos.
+- Función que comprueba que la contraseña introducida en el constructor es valida
+
+Cosas por hacer:
+- Crear clase base de datos
+- Añadir métodos a la clase Grupo para calcular el saldo, los gastos de cada uno y todas esas cosas
+- Crear menu personalizado para el usuario activo

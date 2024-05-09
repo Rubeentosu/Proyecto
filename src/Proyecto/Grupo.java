@@ -50,6 +50,30 @@ public class Grupo {
         this.idAdmin = idUsuario;
     }
 
+    public static int getContadorGrupos() {
+        return contadorGrupos;
+    }
+
+    public static void setContadorGrupos(int contadorGrupos) {
+        Grupo.contadorGrupos = contadorGrupos;
+    }
+
+    public ArrayList<Gasto> getGastos() {
+        return gastos;
+    }
+
+    public void setGastos(ArrayList<Gasto> gastos) {
+        this.gastos = gastos;
+    }
+
+    public ArrayList<usuario> getComponentes() {
+        return componentes;
+    }
+
+    public void setComponentes(ArrayList<usuario> componentes) {
+        this.componentes = componentes;
+    }
+
     @Override
     public String toString() {
         return "Grupo{" +
@@ -58,19 +82,6 @@ public class Grupo {
                 ", administrador=" + idAdmin +
                 '}';
     }
-/*
-    public void añadirGastos() {
-        Scanner sc = new Scanner(System.in);
-        System.out.println("Por favor, introduzca una descripción del gasto");
-        String descripcion = leerCadena();
-        System.out.println("Por favor, introduzca cuanto ha costado");
-        double cantidad  = leerNum();
-
-
-        gastos.add(new Gasto(descripcion, cantidad, pagador));
-    }
-*/
-    //public void eliminarGastos()
 
     //función que lee una cadena
     public static String leerCadena(){
