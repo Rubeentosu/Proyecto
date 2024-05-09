@@ -27,7 +27,7 @@ public class Main {
                     System.out.print("Ingrese la contraseña del usuario: ");
                     String contraseña = leerTexto();
                     if (usuario.validPass(contraseña)) {usuarios.add(new usuario(nombre,contraseña));}
-
+                    usuarios.add(new usuario("nombre","contrase"));
                     System.out.println("Usuario añadido.");
                     break;
                 case 2:
@@ -46,21 +46,22 @@ public class Main {
                     break;
                 case 4:
                     usuario.crearGrupo((ArrayList<usuario>) usuarios);
+
                     break;
                 case 5:
                     usuario.eliminarGrupo((ArrayList<usuario>) usuarios);
                     break;
                 case 6:
-                    usuario.verGrupos();
+
                     break;
                 case 7:
-                    usuario.verGrupos();
+
                     break;
                 case 8:
-                    usuario.verGrupos();
+
                     break;
                 case 9:
-                    usuario.verGrupos();
+
                     break;
                 case 10:
                     // Salir del programa
@@ -80,7 +81,6 @@ public class Main {
         System.out.println("3. Ver grupos");
         System.out.println("4. Crear grupo");
         System.out.println("5. Eliminar grupo");
-        System.out.println("5. Ver grupos");
         System.out.println("6. Añadir usuario");
         System.out.println("7. Eliminar Usuario");
         System.out.println("8. Ver saldo");

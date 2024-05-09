@@ -195,11 +195,12 @@ public class usuario implements Comparable{
     public static void verGrupos(){
         boolean hayGrupo = false;
         if (!hayGrupo){
-            System.out.println("Grupos: ");
             for (Grupo grupo : grupos) {
+                System.out.println("Grupos: ");
             System.out.println(grupo.toString());
-            }} else {
-            System.out.println("No hay grupos que mostrar");
+            }
+        }else {
+            System.out.println("No hay grupos creados");
         }
     }
 }
