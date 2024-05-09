@@ -26,7 +26,7 @@ public class Main {
                     String nombre = leerTexto();
                     System.out.print("Ingrese la contraseña del usuario: ");
                     String contraseña = leerTexto();
-                    if (usuario.validPass(contraseña)) usuarios.add(new usuario(nombre,contraseña));
+                    if (usuario.validPass(contraseña)) {usuarios.add(new usuario(nombre,contraseña));}
 
                     System.out.println("Usuario añadido.");
                     break;
@@ -34,19 +34,22 @@ public class Main {
                     //Ver Usuarios
                     boolean hayUsuarios =false;
                     if (!hayUsuarios){
+                        for (usuario usuario : usuarios){
+                            System.out.println(usuario.toString());
+                        }
                         System.out.println("No hay usuarios registrados");
-                    }else{for (usuario usuario : usuarios){
-                        System.out.println(usuario.toString());
-                    }}
+                    }else{
+                        System.out.println("No hay usuarios registrados");
+                    }
                     break;
                 case 3:
-                    usuario.crearGrupo((ArrayList<usuario>) usuarios);
+                    usuario.verGrupos();
                     break;
                 case 4:
-                    usuario.eliminarGrupo((ArrayList<usuario>) usuarios);
+                    usuario.crearGrupo((ArrayList<usuario>) usuarios);
                     break;
                 case 5:
-                    usuario.verGrupos();
+                    usuario.eliminarGrupo((ArrayList<usuario>) usuarios);
                     break;
                 case 6:
                     usuario.verGrupos();
