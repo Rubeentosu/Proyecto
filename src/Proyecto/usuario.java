@@ -154,7 +154,10 @@ public class usuario implements Comparable{
                 if (gr.getComponentes().contains(user)) {
                     throw new RuntimeException("El usuario ya forma parte del grupo");
                 } else {
+                    //Añadimos el usuario al grupo
                     gr.getComponentes().add(user);
+                    //Añadimos a lista de grupos del nuevo usuario este grupo
+                    user.getGruposPertenece().add(gr);
                     exito = true;
                 }
             }
@@ -175,7 +178,10 @@ public class usuario implements Comparable{
             }else {
                 //Si exite, comprobamos si ya forma parte del grupo
                 if (gr.getComponentes().contains(user)) {
+                    //Eliminamos eel usuario del grupo
                     gr.getComponentes().remove(user);
+                    //Eliminamos el grupo de la lista de grupos del usuario
+                    user.getGruposPertenece().remove(gr);
                     exito = true;
 
                 } else {
