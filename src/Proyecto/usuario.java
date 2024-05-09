@@ -194,11 +194,15 @@ public class usuario implements Comparable{
     //Funcion verGrupos
     public static void verGrupos(){
         boolean hayGrupo = false;
-        if (!hayGrupo)
-            System.out.println("No hay grupos que mostrar");
-        else {System.out.println("Grupos: ");
+        if (!hayGrupo){
+            System.out.println("Grupos: ");
+        for (Grupo grupo : grupos) {
+            System.out.println(grupo.toString());
+        }} else {System.out.println("Grupos: ");
             for (Grupo grupo : grupos) {
                 System.out.println(grupo.toString());
-            }}
+            }
+            System.out.println("No hay grupos que mostrar");
+        }
     }
 }
