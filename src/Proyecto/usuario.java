@@ -196,12 +196,9 @@ public class usuario implements Comparable{
         boolean hayGrupo = false;
         if (!hayGrupo){
             System.out.println("Grupos: ");
-        for (Grupo grupo : grupos) {
-            System.out.println(grupo.toString());
-        }} else {System.out.println("Grupos: ");
             for (Grupo grupo : grupos) {
-                System.out.println(grupo.toString());
-            }
+            System.out.println(grupo.toString());
+            }} else {
             System.out.println("No hay grupos que mostrar");
         }
     }
