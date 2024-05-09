@@ -3,14 +3,18 @@ package Proyecto;
 import java.util.ArrayList;
 
 public class Grupo {
-    private int idGrupo;
+    private static int numGrupo;
+    private int idGrupo=numGrupo;
     private String nombre;
-    private usuario administrador;
+    private int idUsuario;
 
-    public Grupo(int idGrupo, String nombre, usuario administrador) {
-        this.idGrupo = idGrupo;
+
+
+    public Grupo(String nombre, int idUsuario) {
+        numGrupo++;
+        this.idGrupo = numGrupo;
         this.nombre = nombre;
-        this.administrador = administrador;
+        this.idUsuario = idUsuario;
     }
 
     // Getters y setters
@@ -30,12 +34,12 @@ public class Grupo {
         this.nombre = nombre;
     }
 
-    public usuario getAdministrador() {
-        return administrador;
+    public int getIdUsuario() {
+        return idUsuario;
     }
 
-    public void setAdministrador(usuario administrador) {
-        this.administrador = administrador;
+    public void setIdUsuario(int idUsuario) {
+        this.idUsuario = idUsuario;
     }
 
     @Override
@@ -43,11 +47,12 @@ public class Grupo {
         return "Grupo{" +
                 "idGrupo=" + idGrupo +
                 ", nombre='" + nombre + '\'' +
-                ", administrador=" + administrador +
+                ", administrador=" + idUsuario +
                 '}';
     }
 
     public void añadirGastos(String descripcion, double cantidad, usuario pagador) {
 
     }
+
 }
