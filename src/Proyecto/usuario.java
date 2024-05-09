@@ -3,6 +3,7 @@ package Proyecto;
 import java.util.InputMismatchException;
 import java.util.Objects;
 import java.util.Scanner;
+import java.util.ArrayList;
 
 public class usuario implements Comparable{
     private static int userID = 1;
@@ -109,7 +110,7 @@ public class usuario implements Comparable{
         System.out.println("Ingrese el nombre del grupo: ");
         String nombreGrupo = sc.next();
 
-        Grupo nuevoGrupo= new Grupo(id,nombreGrupo,usuario);
+        Grupo nuevoGrupo= new Grupo(nombreGrupo,12);
 
         grupos.add(nuevoGrupo);
         System.out.println("Grupo '" + nombreGrupo + "' creado por " + usuario);
