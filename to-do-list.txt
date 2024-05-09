@@ -1,3 +1,9 @@
 Crear clase usuario
 crear clase abono
 crear clase grupo
+
+
+9-5-2024 Javi
+- He creado la clase usuario, he añadido los atributos, constructor, getter/setter, equal, to-string y comparator
+- Por hacer: Añadir throws a contraseña para comprobar que sea correcta, modificar constructor para hacer la id
+constante, añadir métodos
