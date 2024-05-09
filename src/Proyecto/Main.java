@@ -37,7 +37,6 @@ public class Main {
                         for (usuario usuario : usuarios){
                             System.out.println(usuario.toString());
                         }
-                        System.out.println("No hay usuarios registrados");
                     }else{
                         System.out.println("No hay usuarios registrados");
                     }
