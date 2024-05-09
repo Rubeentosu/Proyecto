@@ -1,18 +1,28 @@
 package Proyecto;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Grupo {
-    private static int idGrupo = 1;
+    private static int contadorGrupos =0;
+    private int idGrupo;
     private String nombre;
-    private int idUsuario;
+    private int idAdmin;
+    //Lista en el que se guardarán todos los gastos del grupo
+    private ArrayList<Gasto> gastos;
+    private ArrayList<usuario> componentes;
 
 
 
-    public Grupo(String nombre, int idUsuario) {
-        idGrupo++;
+    public Grupo(String nombre, int idUsuario, usuario admin) {
+        contadorGrupos++;
+        this.idGrupo=contadorGrupos;
         this.nombre = nombre;
-        this.idUsuario = idUsuario;
+        this.idAdmin = idUsuario;
+        gastos = new ArrayList<>();
+        componentes = new ArrayList<>();
+        componentes.add(admin);
     }
 
     // Getters y setters
@@ -32,12 +42,12 @@ public class Grupo {
         this.nombre = nombre;
     }
 
-    public int getIdUsuario() {
-        return idUsuario;
+    public int getIdAdmin() {
+        return idAdmin;
     }
 
-    public void setIdUsuario(int idUsuario) {
-        this.idUsuario = idUsuario;
+    public void setIdAdmin(int idUsuario) {
+        this.idAdmin = idUsuario;
     }
 
     @Override
@@ -45,11 +55,46 @@ public class Grupo {
         return "Grupo{" +
                 "idGrupo=" + idGrupo +
                 ", nombre='" + nombre + '\'' +
-                ", administrador=" + idUsuario +
+                ", administrador=" + idAdmin +
                 '}';
     }
+/*
+    public void añadirGastos() {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Por favor, introduzca una descripción del gasto");
+        String descripcion = leerCadena();
+        System.out.println("Por favor, introduzca cuanto ha costado");
+        double cantidad  = leerNum();
 
-    public void añadirGastos(String descripcion, double cantidad, usuario pagador) {
 
+        gastos.add(new Gasto(descripcion, cantidad, pagador));
+    }
+*/
+    //public void eliminarGastos()
+
+    //función que lee una cadena
+    public static String leerCadena(){
+        Scanner sc = new Scanner(System.in);
+        return sc.nextLine();
+    }
+
+    //Función que lee un double
+    public static double leerNum(){
+        Scanner sc = new Scanner(System.in);
+        double num = 0;
+        boolean error;
+        do{
+            error= false;
+            try{
+                num= sc.nextDouble();
+                error=false;
+            }catch (NumberFormatException e){
+                error = true;
+                System.out.println("Introduzca un número");
+            }finally {
+                sc.nextLine();
+            }
+        }while (error);
+        return num;
     }
 }

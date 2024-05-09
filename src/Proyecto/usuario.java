@@ -6,15 +6,19 @@ import java.util.Scanner;
 import java.util.ArrayList;
 
 public class usuario implements Comparable{
-    private static int userID = 1;
+    private static int numUsuarios=0;
+    private int userID;
     private String name;
-    private  String pass;
+    private String pass;
+    private ArrayList<Grupo> gruposPertenece;
 
     //Constructor
     public usuario(String name, String pass) {
-        userID++;
+        numUsuarios++;
+        this.userID=numUsuarios;
         this.name = name;
         this.pass = pass;
+        gruposPertenece= new ArrayList<>();
     }
 
     public int getUserID() {
@@ -40,6 +44,15 @@ public class usuario implements Comparable{
     public void setPass(String pass) {
         this.pass = pass;
     }
+
+    public ArrayList<Grupo> getGruposPertenece() {
+        return gruposPertenece;
+    }
+
+    public void setGruposPertenece(ArrayList<Grupo> gruposPertenece) {
+        this.gruposPertenece = gruposPertenece;
+    }
+
 
     @Override
     public boolean equals(Object o) {
@@ -101,37 +114,80 @@ public class usuario implements Comparable{
             return false;
         }
     }
-    static ArrayList<Grupo> grupos = new ArrayList<>();
-    public static void crearGrupo(usuario usuario){
-        Scanner sc = new Scanner(System.in);
-        System.out.println("Ingrese el id del grupo: ");
-        int id = sc.nextInt();
-
+    public void crearGrupo(usuario usuario){
         System.out.println("Ingrese el nombre del grupo: ");
-        String nombreGrupo = sc.next();
+        String nombreGrupo = leerCadena();
 
-        Grupo nuevoGrupo= new Grupo(nombreGrupo,12);
+        Grupo nuevoGrupo= new Grupo(nombreGrupo,this.getUserID(), usuario);
 
-        grupos.add(nuevoGrupo);
+        this.gruposPertenece.add(nuevoGrupo);
         System.out.println("Grupo '" + nombreGrupo + "' creado por " + usuario);
     }
 
     //Eliminar Grupo
-    public static void eliminarGrupo(usuario usuario) {
+    public void eliminarGrupo(usuario usuario) {
         Scanner sc = new Scanner(System.in);
         int id;
         System.out.println("Id del grupo que quieres eliminar");
         id = sc.nextInt();
-        grupos.remove(id);
+        gruposPertenece.remove(id);
         System.out.println("Grupo '" + id + "' eliminado por " + usuario);
     }
 
     //Funcion verGrupos
-    public static void verGrupos(){
+    public void verGrupos(){
         System.out.println("Grupos: ");
-        for (Grupo grupo : grupos) {
+        for (Grupo grupo : gruposPertenece) {
             System.out.println(grupo.toString());
         }
+    }
+
+    //Función que permite añadir un gasto a un grupo
+    public void añadirGastos(String nombreGrupo) {
+        if (usuarioPerteneceGrupo(nombreGrupo)){
+            System.out.println("Por favor, introduzca una descripción del gasto");
+            String descripcion = leerCadena();
+            System.out.println("Por favor, introduzca cuanto ha costado");
+            double cantidad  = leerNum();
+
+
+            //gastos.add(new Gasto(descripcion, cantidad, this.getUserID()));
+        }else throw new RuntimeException("Usted no pertenece a ese grupo");
+
+    }
+    //función que lee una cadena
+    public static String leerCadena(){
+        Scanner sc = new Scanner(System.in);
+        return sc.nextLine();
+    }
+
+    //Función que lee un double
+    public static double leerNum(){
+        Scanner sc = new Scanner(System.in);
+        double num = 0;
+        boolean error;
+        do{
+            error= false;
+            try{
+                num= sc.nextDouble();
+                error=false;
+            }catch (NumberFormatException e){
+                error = true;
+                System.out.println("Introduzca un número");
+            }finally {
+                sc.nextLine();
+            }
+        }while (error);
+        return num;
+    }
+
+    //Función que comprueba si una id de un grupo pertenece a un grupo en el que está dentro el usuario
+    public boolean usuarioPerteneceGrupo (String nombreGrupo){
+        boolean pertenece = false;
+        for (Grupo gr : gruposPertenece){
+            if (gr.getNombre().equals(nombreGrupo)) pertenece = true;
+        }
+        return pertenece;
     }
 
 }

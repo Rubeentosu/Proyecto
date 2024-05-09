@@ -1,29 +1,32 @@
 package Proyecto;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class Gasto {
-    private int id;
+    private static int numGastos=0;
+    private int idGasto;
     private String description;
-    private usuario pagador;
+    private int  pagador;
     private double cantidad;
     private LocalDateTime date;
 
-    public Gasto(int id, String description, double cantidad, usuario pagador, LocalDateTime date) {
-        this.id = id;
+    public Gasto(String description, double cantidad, int pagador) {
+        numGastos++;
+        this.idGasto=numGastos;
         this.description = description;
         this.cantidad = cantidad;
         this.pagador = pagador;
-        this.date = date;
+        date= LocalDateTime.now();
     }
 
     // Getters and setters
     public int getId() {
-        return id;
+        return idGasto;
     }
 
     public void setId(int id) {
-        this.id = id;
+        this.idGasto = id;
     }
 
     public String getDescription() {
@@ -34,11 +37,11 @@ public class Gasto {
         this.description = description;
     }
 
-    public usuario getPagador() {
+    public int getPagador() {
         return pagador;
     }
 
-    public void setPagador(usuario pagador) {
+    public void setPagador(int pagador) {
         this.pagador = pagador;
     }
 
@@ -50,11 +53,11 @@ public class Gasto {
         this.cantidad = cantidad;
     }
 
-    public usuario getPayer() {
+    public int getPayer() {
         return pagador;
     }
 
-    public void setPayer(usuario pagador) {
+    public void setPayer(int pagador) {
         this.pagador = pagador;
     }
 
@@ -69,7 +72,7 @@ public class Gasto {
     @Override
     public String toString() {
         return "Gasto{" +
-                "id=" + id +
+                "id=" + idGasto +
                 ", description='" + description + '\'' +
                 ", pagador=" + pagador +
                 ", amount=" + cantidad +
