@@ -1,16 +1,20 @@
 package Proyecto;
 
-import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.Objects;
 import java.util.Scanner;
+import java.util.ArrayList;
 
 public class usuario implements Comparable{
-    private int userID = 1;
+    private static int numUsuario=0;
+    private int userID;
     private String name;
     private  String pass;
 
-    public usuario(int userID, String name, String pass) {
-        this.userID = userID;
+    //Constructor
+    public usuario(String name, String pass) {
+        numUsuario++;
+        this.userID=numUsuario;
         this.name = name;
         this.pass = pass;
     }
@@ -61,44 +65,140 @@ public class usuario implements Comparable{
                 '}';
     }
 
+    //Compare to por Nombre
     @Override
     public int compareTo(Object obj) {
         usuario user =(usuario) obj;
         return this.getName().compareTo(user.getName());
     }
 
+    //Función que comprueba que una contraseña es válida, con mayúsculas, minúsculas, números, ext
+    public static boolean validPass (String pass){
+        boolean lowerCase= false;
+        boolean upperCase= false;
+        boolean num = false;
+        boolean space = true;
+        for (int i = 0; i < pass.length(); i++){
+            if (pass.charAt(i) >= 'a' && pass.charAt(i) <= 'z'){
+                lowerCase=true;
+            }
+            if (pass.charAt(i) >= 'A' && pass.charAt(i) <= 'Z'){
+                upperCase=true;
+            }
+            if (pass.charAt(i) >= '0' && pass.charAt(i) <= '9'){
+                num=true;
+            }
+            if (pass.charAt(i) == ' '){
+                space=false;
+            }
+        }
+        if (lowerCase && upperCase && num && space) {
+            return true;
+        }
+        else {
+            if (!lowerCase) throw new ArithmeticException("No hay ninguna letra minúscula");
+            else if (!upperCase) throw new InputMismatchException("No hay ninguna letra mayúscula");
+            else if (!num) throw new ArrayIndexOutOfBoundsException("No hay ninguna número");
+            else if (!space) throw new RuntimeException("Hay un espacio en la contraseña");
+            return false;
+        }
+    }
     static ArrayList<Grupo> grupos = new ArrayList<>();
-    public static void crearGrupo(usuario usuario){
+    public static void crearGrupo(ArrayList<usuario> usuarios) {
         Scanner sc = new Scanner(System.in);
-        System.out.println("Ingrese el id del grupo: ");
-        int id = sc.nextInt();
 
         System.out.println("Ingrese el nombre del grupo: ");
         String nombreGrupo = sc.next();
 
-        Grupo nuevoGrupo= new Grupo(id,nombreGrupo,usuario);
+        // Verificar si existen usuarios antes de continuar
+        if (usuarios.isEmpty()) {
+            System.out.println("No hay usuarios disponibles para crear grupos.");
+            return;
+        }
 
+        System.out.println("Ingrese el idUsuario: ");
+        int idUsuario = sc.nextInt();
+
+        // Verificar si el idUsuario especificado existe en la lista de usuarios
+        boolean usuarioExiste = false;
+        for (usuario user : usuarios) {
+            if (user.getUserID() == idUsuario) {
+                usuarioExiste = true;
+                break;
+            }
+        }
+
+        if (!usuarioExiste) {
+            System.out.println("El usuario especificado no existe.");
+            return;
+        }
+
+        Grupo nuevoGrupo = new Grupo(nombreGrupo, idUsuario);
         grupos.add(nuevoGrupo);
-        System.out.println("Grupo '" + nombreGrupo + "' creado por " + usuario);
+        System.out.println("Grupo '" + nombreGrupo + "' creado por usuario con id " + idUsuario);
     }
 
-    //Eliminar Grupo
-    public static void eliminarGrupo(usuario usuario) {
+    //Eliminar un grupo
+    public static void eliminarGrupo(ArrayList<usuario> usuarios) {
         Scanner sc = new Scanner(System.in);
-        int id;
-        System.out.println("Id del grupo que quieres eliminar");
-        id = sc.nextInt();
-        grupos.remove(id);
-        System.out.println("Grupo '" + id + "' eliminado por " + usuario);
+
+        // Verificar si hay grupos para eliminar
+        if (grupos.isEmpty()) {
+            System.out.println("No hay grupos para eliminar.");
+            return;
+        }
+
+        // Solicitar al usuario el ID del grupo que desea eliminar
+        System.out.println("Ingrese el ID del grupo que desea eliminar:");
+        int idGrupo = sc.nextInt();
+
+        // Buscar el grupo en la lista de grupos
+        Grupo grupoAEliminar = null;
+        for (Grupo grupo : grupos) {
+            if (grupo.getIdGrupo() == idGrupo) {
+                grupoAEliminar = grupo;
+                break;
+            }
+        }
+
+        // Verificar si se encontró el grupo
+        if (grupoAEliminar == null) {
+            System.out.println("No se encontró un grupo con el ID especificado.");
+            return;
+        }
+
+        // Verificar si el usuario tiene permisos para eliminar el grupo
+        System.out.println("Ingrese el ID del usuario administrador para confirmar la eliminación del grupo:");
+        int idAdministrador = sc.nextInt();
+
+        // Buscar el usuario administrador en la lista de usuarios
+        usuario administrador = null;
+        for (usuario user : usuarios) {
+            if (user.getUserID() == idAdministrador) {
+                administrador = user;
+                break;
+            }
+        }
+
+        // Verificar si se encontró el usuario administrador
+        if (administrador == null || administrador.getUserID() != grupoAEliminar.getIdUsuario()) {
+            System.out.println("No tiene permisos para eliminar este grupo o el administrador especificado no existe.");
+            return;
+        }
+
+        // Eliminar el grupo
+        grupos.remove(grupoAEliminar);
+        System.out.println("El grupo ha sido eliminado correctamente.");
     }
 
     //Funcion verGrupos
     public static void verGrupos(){
-        System.out.println("Grupos: ");
-        for (Grupo grupo : grupos) {
-            System.out.println(grupo.toString());
-        }
+        boolean hayGrupo = false;
+        if (!hayGrupo)
+            System.out.println("No hay grupos que mostrar");
+        else {System.out.println("Grupos: ");
+            for (Grupo grupo : grupos) {
+                System.out.println(grupo.toString());
+            }}
     }
-
-
 }
