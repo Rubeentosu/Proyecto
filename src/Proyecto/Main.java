@@ -27,7 +27,6 @@ public class Main {
                     System.out.print("Ingrese la contraseña del usuario: ");
                     String contraseña = leerTexto();
                     if (usuario.validPass(contraseña)) {usuarios.add(new usuario(nombre,contraseña));}
-                    usuarios.add(new usuario("nombre","contrase"));
                     System.out.println("Usuario añadido.");
                     break;
                 case 2:

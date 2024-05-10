@@ -1,3 +1,20 @@
 Crear clase usuario
 crear clase abono
 crear clase grupo
+
+Ruben, Javier y Adrian 3-05-2024: Creation del diagrama de clases y casos de uso
+
+Ruben, Javier y Adrian 7-05-2024: Revision y modification del diagrama de clases y casos de uso
+
+Ruben
+9-05-2024 →
+En la clase:
+        -Grupo: los atributos, constructor, getter/setter y toString
+        -Gastos: los atributos, constructor, setter/setter y toString
+        -usuario: las funciones creaGrupo
+
+10-05-2024 →
+En la clase:
+        -usuario:eliminarGrupo y ver grupo
+        -Main: he creado un menu provisional para la prueba de funciones
+
