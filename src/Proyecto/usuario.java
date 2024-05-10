@@ -1,10 +1,7 @@
 package Proyecto;
 
 import java.time.LocalDateTime;
-import java.util.InputMismatchException;
-import java.util.Objects;
-import java.util.Scanner;
-import java.util.ArrayList;
+import java.util.*;
 
 public class usuario implements Comparable{
     private static int userID = 1;
@@ -137,47 +134,57 @@ public class usuario implements Comparable{
 
     private ArrayList<Gasto> gastos = new ArrayList<>();
     // Funcion para añadir en un arrayList un gasto, con los datos pasados por parametros
-    public ArrayList añadirGastos(Grupo grupo, String descripcion, double cantidad, usuario pagador) {
-        if (this.getUserID() != grupo.getAdministrador().getUserID()) {
-            System.out.println("ERROR: No eres el administrador de este grupo");
-            return gastos;
+    public void añadirGastos(Grupo grupo, String descripcion, double cantidad, usuario pagador) {
+        // Comprobacion de que los datos introducidos no sea nulos
+        if (grupo == null || descripcion == null || descripcion.isEmpty() || cantidad <= 0 || pagador == null) {
+            System.out.println("ERROR, datos invalidos");
+            return;
         }
 
+        // Comprobamos que el usuario que inserta los datos sea el admin
+        if (this.getUserID() != grupo.getAdministrador().getUserID()) {
+            System.out.println("ERROR, no eres el administrador del grupo");
+            return;
+        }
+
+        // Creamos el gasto y lo añadimos al arrayList
         Gasto gasto = new Gasto(grupo.getIdGrupo(), descripcion, cantidad, pagador, LocalDateTime.now());
         gastos.add(gasto);
-
-        return gastos;
+        System.out.println("Se ha añadido un gasto correctamente");
     }
 
     // Funcion para eliminar un gasto del arrayList
-    public ArrayList<Gasto> eliminarGastos(Grupo grupo) {
+    public void eliminarGastos(Grupo grupo, int idGasto) {
+        // Comprobamos que el grupo no sea invalido
+        if (grupo == null) {
+           System.out.println("ERROR, grupo invalido");
+           return;
+       }
+
+        // Comprobamos que sea el usuario administrador
         if (this.getUserID() != grupo.getAdministrador().getUserID()) {
-            System.out.println("ERROR: No eres el administrador de este grupo");
-            return gastos;
+            System.out.println("ERROR, no eres el administrador del grupo");
+            return;
         }
 
-        Scanner sc = new Scanner(System.in);
-        // Pedimos al user la id del gasto
-        System.out.println("Introduce el id del gasto");
-        int idGasto = sc.nextInt();
-
-        // Buscamos en el arrayList si hay un gasto con la id introducida
-        boolean fin = false;
-        for (Gasto gasto : gastos) {
-             if (idGasto == gasto.getId()) {
-                 gastos.remove(idGasto);
-                 fin = true;
-             }
+        // buscamos el gasto para eliminarlo (Si es que esta registrado)
+        boolean encontrado = false;
+        Iterator<Gasto> iterator = gastos.iterator();
+        while (iterator.hasNext()){
+            Gasto gasto = iterator.next();
+            if (gasto.getId() == idGasto){
+                iterator.remove();
+                encontrado = true;
+                break;
+            }
         }
 
-        // Comprobamos si el programa ha finalizado correctamente
-        if (fin) {
-            System.out.println("El gasto con id " + idGasto + " ha sido eliminado");
+        // Comprobamos si ha podido encontrar el gasto
+        if (encontrado) {
+            System.out.println("Se ha eliminado el gasto con exito");
         } else {
-            System.out.println("ERROR: No se ha encontrado ningun gasto con la id" + idGasto);
+            System.out.println("ERROR, no se ha encontrado ningun gasto con la id " + idGasto);
         }
-
-        return gastos;
     }
 
 }
