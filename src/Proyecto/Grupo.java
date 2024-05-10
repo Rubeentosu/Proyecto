@@ -2,6 +2,8 @@ package Proyecto;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 public class Grupo {
@@ -83,29 +85,34 @@ public class Grupo {
                 '}';
     }
 
-    //función que lee una cadena
-    public static String leerCadena(){
-        Scanner sc = new Scanner(System.in);
-        return sc.nextLine();
+    //Función que devuelve un mapa con el miembro del grupo y la cantidad que debe
+    public Map<usuario, Double> verSaldo(){
+        //Calculamos la media, lo que en teoría debe pagar cada uno
+        double cadaUnoPaga = gastoMedio();
+        //Creamos el mapa donde guardaremos los valores de forma ordenada
+        Map<usuario, Double> mapa = new LinkedHashMap<>();
+        //Recorremos el array de miembros del grupo y comparamos lo que han pagado ya con lo que deberían pagar cada miembro
+        for (usuario u : componentes){
+            mapa.put(u, gastoUsuario(u.getUserID())-cadaUnoPaga);
+        }
+        //Devolvemos el mapa
+        return mapa;
     }
 
-    //Función que lee un double
-    public static double leerNum(){
-        Scanner sc = new Scanner(System.in);
-        double num = 0;
-        boolean error;
-        do{
-            error= false;
-            try{
-                num= sc.nextDouble();
-                error=false;
-            }catch (NumberFormatException e){
-                error = true;
-                System.out.println("Introduzca un número");
-            }finally {
-                sc.nextLine();
-            }
-        }while (error);
-        return num;
+
+    //Función que calcula el gasto medio de cada integrante de un grupo con un stream
+    public double gastoMedio(){
+        //Con un stream calculamos el acumulado de todos los gastos y lo dividimos entre el número de integrantes
+        return gastos.stream()
+                .mapToDouble(Gasto::getCantidad)
+                .sum()  /   componentes.size();
+    }
+
+    //Función que calcula el total de lo que ya ha pagado un usuario
+    public double gastoUsuario (int idUsuario){
+        return gastos.stream()
+                .filter(g -> g.getPagador()==idUsuario) //Filtramos aquellos en los quee el id coincida
+                .mapToDouble(Gasto::getCantidad)//Sacamos la cantidad
+                .sum(); //Hacemos la sumatoria
     }
 }

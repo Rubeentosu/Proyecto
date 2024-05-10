@@ -22,8 +22,14 @@ se llama gasto, no idGasto
 - En la clase grupo he creado como atributos un arrayList de usuarios que contendrá los miembros, así como un array de gastos.
 - Corrección de la forma de asignar un id en el constructor de todas las clases para que todos sean unicos y progresivos.
 - Función que comprueba que la contraseña introducida en el constructor es valida
+- Añadida función verSaldo, calcular mediaGasto a la clase grupo y funcion que calcula el total gastado por un usuario en concreto
+- Añadida clase database para conectar en un futuro
 
 Cosas por hacer:
 - Crear clase base de datos
 - Añadir métodos a la clase Grupo para calcular el saldo, los gastos de cada uno y todas esas cosas
-- Crear menu personalizado para el usuario activo
+- Crear menu personalizado para el usuario activo: Primero pedirá iniciar sesion o registrarse(hay que crear esas funciones
+en el main), comprobando si un usuario existe ya dentro de la base de datos. Una vez que hayas entrado en tu usuario, se te
+mostrará una lista con tus grupos (usuario.gruposPertenece()), ahí se preguntará a que grupo quieres acceder (segun el número de la lista)
+y cuando accedas ya te saldrán todas las cosas que puedes hacer en el grupo, las funciones. Lo suyo sería que al entrar comprebe
+si eres el admin, y si lo eres te muestre tod lo que puedes hacer, y si no eres el adnmin no te muestre esas opciones
