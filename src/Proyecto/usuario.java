@@ -110,12 +110,6 @@ public class usuario implements Comparable{
         System.out.println("Ingrese el nombre del grupo: ");
         String nombreGrupo = sc.next();
 
-        // Verificar si existen usuarios antes de continuar
-        if (usuarios.isEmpty()) {
-            System.out.println("No hay usuarios disponibles para crear grupos.");
-            return;
-        }
-
         System.out.println("Ingrese el idUsuario: ");
         int idUsuario = sc.nextInt();
 
@@ -127,7 +121,6 @@ public class usuario implements Comparable{
                 break;
             }
         }
-
         if (!usuarioExiste) {
             System.out.println("El usuario especificado no existe.");
             return;
@@ -146,6 +139,11 @@ public class usuario implements Comparable{
         if (grupos.isEmpty()) {
             System.out.println("No hay grupos para eliminar.");
             return;
+        }
+
+        //Muestra los grupos que se pueden eliminar
+        for (Grupo gr : grupos) {
+            System.out.println(gr.toString());
         }
 
         // Solicitar al usuario el ID del grupo que desea eliminar
