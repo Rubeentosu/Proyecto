@@ -19,11 +19,5 @@ public class Main {
         usuarios.get(0).eliminarUsuario(usuarios.get(0).getGruposPertenece().get(0),usuarios.get(1), usuarios);
         System.out.println("El grupo 1 está compuesto por"+usuarios.get(0).getGruposPertenece().get(0).getComponentes());
 
-
-
-
-
-
-
     }
 }
