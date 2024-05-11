@@ -15,11 +15,14 @@ public class usuario implements Comparable{
 
     //Constructor
     public usuario(String name, String pass) {
-        numUsuarios++;
-        this.userID=numUsuarios;
-        this.name = name;
-        this.pass = pass;
-        gruposPertenece= new ArrayList<>();
+        if(validPass(pass)) {
+            numUsuarios++;
+            this.userID = numUsuarios;
+            this.name = name;
+            this.pass = pass;
+            gruposPertenece = new ArrayList<>();
+        }
+        else throw new ArithmeticException("Contraseña no valida");
     }
 
     public int getUserID() {
@@ -90,30 +93,32 @@ public class usuario implements Comparable{
         boolean upperCase= false;
         boolean num = false;
         boolean space = true;
-        for (int i = 0; i < pass.length(); i++){
-            if (pass.charAt(i) >= 'a' && pass.charAt(i) <= 'z'){
-                lowerCase=true;
+        if(pass.length()>=8) {
+            for (int i = 0; i < pass.length(); i++) {
+                if (pass.charAt(i) >= 'a' && pass.charAt(i) <= 'z') {
+                    lowerCase = true;
+                }
+                if (pass.charAt(i) >= 'A' && pass.charAt(i) <= 'Z') {
+                    upperCase = true;
+                }
+                if (pass.charAt(i) >= '0' && pass.charAt(i) <= '9') {
+                    num = true;
+                }
+                if (pass.charAt(i) == ' ') {
+                    space = false;
+                }
             }
-            if (pass.charAt(i) >= 'A' && pass.charAt(i) <= 'Z'){
-                upperCase=true;
-            }
-            if (pass.charAt(i) >= '0' && pass.charAt(i) <= '9'){
-                num=true;
-            }
-            if (pass.charAt(i) == ' '){
-                space=false;
+            if (lowerCase && upperCase && num && space) {
+                return true;
+            } else {
+                if (!lowerCase) throw new ArithmeticException("No hay ninguna letra minúscula");
+                else if (!upperCase) throw new InputMismatchException("No hay ninguna letra mayúscula");
+                else if (!num) throw new ArrayIndexOutOfBoundsException("No hay ningún número");
+                else if (!space) throw new RuntimeException("Hay un espacio en la contraseña");
+                return false;
             }
         }
-        if (lowerCase && upperCase && num && space) {
-            return true;
-        }
-        else {
-            if (!lowerCase) throw new ArithmeticException("No hay ninguna letra minúscula");
-            else if (!upperCase) throw new InputMismatchException("No hay ninguna letra mayúscula");
-            else if (!num) throw new ArrayIndexOutOfBoundsException("No hay ninguna número");
-            else if (!space) throw new RuntimeException("Hay un espacio en la contraseña");
-            return false;
-        }
+        else throw new IndexOutOfBoundsException("La contraseña debe tener 8 o más caractéres");
     }
     public void crearGrupo(usuario usuario){
         System.out.println("Ingrese el nombre del grupo: ");

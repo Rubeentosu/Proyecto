@@ -27,9 +27,12 @@ se llama gasto, no idGasto
 
 Cosas por hacer:
 - Crear clase base de datos
-- Añadir métodos a la clase Grupo para calcular el saldo, los gastos de cada uno y todas esas cosas
 - Crear menu personalizado para el usuario activo: Primero pedirá iniciar sesion o registrarse(hay que crear esas funciones
 en el main), comprobando si un usuario existe ya dentro de la base de datos. Una vez que hayas entrado en tu usuario, se te
 mostrará una lista con tus grupos (usuario.gruposPertenece()), ahí se preguntará a que grupo quieres acceder (segun el número de la lista)
-y cuando accedas ya te saldrán todas las cosas que puedes hacer en el grupo, las funciones. Lo suyo sería que al entrar comprebe
+y cuando accedas ya te saldrán todas las cosas que puedes hacer en el grupo, las funciones. Lo suyo sería que al entrar compruebe
 si eres el admin, y si lo eres te muestre tod lo que puedes hacer, y si no eres el adnmin no te muestre esas opciones
+- Crear función que diga quien le tiene que pagar cuanto a quien de forma sencilla
+
+11-05-24
+-Corregido error en constructor y funcion que valida contraseña. Comprobado en el main que funciona

@@ -5,25 +5,25 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
-        List<usuario> usuarios = new ArrayList<>();
-        usuario user1 = new usuario("Ruben","contraseña");
-        System.out.println(user1);
-        usuarios.add(new usuario("Ruben","contraseña")) ;
+        ArrayList<usuario> usuarios = new ArrayList<>();
+        usuarios.add(new usuario("Javi", "Javier1997"));
+        usuarios.add(new usuario("Yasir", "Yasir2005"));
+        usuarios.add(new usuario("David", "David1997"));
+        System.out.println("hola");
 
-        usuarios.add(new usuario("Juan","contraseña"));
-        usuarios.add(user1);
-        System.out.println(usuarios);
-      //  System.out.println(usuario2);
-        user1.crearGrupo(user1);
-        user1.crearGrupo(user1);
-        user1.crearGrupo(user1);
-        user1.verGrupos();
+        usuarios.get(0).crearGrupo(usuarios.get(0));
+        usuarios.get(0).addUser(usuarios.get(0).getGruposPertenece().get(0),usuarios.get(1), usuarios);
+        usuarios.get(0).addUser(usuarios.get(0).getGruposPertenece().get(0),usuarios.get(2), usuarios);
+        System.out.println("El grupo 1 está compuesto por"+usuarios.get(0).getGruposPertenece().get(0).getComponentes());
+        System.out.println("Yasir pertenece al grupo" +usuarios.get(1).getGruposPertenece());
+        usuarios.get(0).eliminarUsuario(usuarios.get(0).getGruposPertenece().get(0),usuarios.get(1), usuarios);
+        System.out.println("El grupo 1 está compuesto por"+usuarios.get(0).getGruposPertenece().get(0).getComponentes());
 
-       // usuario usuario2 = new usuario("Juan","contraseña");
-      //  usuario.crearGrupo(usuario2);
-        //usuario.verGrupos();
 
-       // usuario.eliminarGrupo(usuario1);
-        //usuario.verGrupos();
+
+
+
+
+
     }
 }
