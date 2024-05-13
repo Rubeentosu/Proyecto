@@ -38,3 +38,6 @@ si eres el admin, y si lo eres te muestre tod lo que puedes hacer, y si no eres 
 - Corregido error en constructor y funcion que valida contraseña. Comprobado en el main que funciona
 - Añadido extra 2, tengo que corregir error, he cogido al revés el que tiene que pagar y el que paga, invertir los numeros positivos
 y negativos y ya debería estar bien. Añadir formato cadena.
+
+13-5-24
+Terminado extra 3
