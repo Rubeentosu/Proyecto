@@ -7,3 +7,38 @@ crear clase grupo
 - He creado la clase usuario, he añadido los atributos, constructor, getter/setter, equal, to-string y comparator
 - Por hacer: Añadir throws a contraseña para comprobar que sea correcta, modificar constructor para hacer la id
 constante, añadir métodos
+
+Correcciones que hay que hacer en las Funciones añadirAbono y eliminarAbono de la clase Usuario:
+-En vez de crear un array de gastos en el usuario, se crea solo en el grupo, y cuando añadimos
+un gasto lo metemos en el array de gastos del grupo, no del usuario: ej: grupo1.getGastos().add(gasto);
+- Quizás sería mejor que en vez de meterle las descripciones, id y todas las cosas por parametros, en la misma
+función sea donde se le pidam
+- El la funcion para borrar un gasto, cuando haces el .remove lo haces metiendo idGasto, eso creo que va a dar error
+y debería estar simplemente como gastos.remove(gasto), ya que dentro del for-each has metido que el objeto a borrar
+se llama gasto, no idGasto
+
+10-05-2024 Javi
+- He añadido las funciones añadirUsuario y EliminarUsuario, con control de errores.
+- En la clase grupo he creado como atributos un arrayList de usuarios que contendrá los miembros, así como un array de gastos.
+- Corrección de la forma de asignar un id en el constructor de todas las clases para que todos sean unicos y progresivos.
+- Función que comprueba que la contraseña introducida en el constructor es valida
+- Añadida función verSaldo, calcular mediaGasto a la clase grupo y funcion que calcula el total gastado por un usuario en concreto
+- Añadida clase database para conectar en un futuro
+
+Cosas por hacer:
+- Crear clase base de datos
+- Crear menu personalizado para el usuario activo: Primero pedirá iniciar sesion o registrarse(hay que crear esas funciones
+en el main), comprobando si un usuario existe ya dentro de la base de datos. Una vez que hayas entrado en tu usuario, se te
+mostrará una lista con tus grupos (usuario.gruposPertenece()), ahí se preguntará a que grupo quieres acceder (segun el número de la lista)
+y cuando accedas ya te saldrán todas las cosas que puedes hacer en el grupo, las funciones. Lo suyo sería que al entrar compruebe
+si eres el admin, y si lo eres te muestre tod lo que puedes hacer, y si no eres el adnmin no te muestre esas opciones
+- Crear función que diga quien le tiene que pagar cuanto a quien de forma sencilla
+
+11-05-24
+- Corregido error en constructor y funcion que valida contraseña. Comprobado en el main que funciona
+- Añadido extra 2, tengo que corregir error, he cogido al revés el que tiene que pagar y el que paga, invertir los numeros positivos
+y negativos y ya debería estar bien. Añadir formato cadena.
+
+14-5-24
+Terminado extra 2. Que puto asco de vida: Funciona perfectamente si no hay numeros periosicos. Evitar los 3
+Falta el main y la clase de bases de datos si se acaba haciendo
