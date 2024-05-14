@@ -1,10 +1,8 @@
 package Proyecto;
 
 import java.lang.reflect.Array;
-import java.util.InputMismatchException;
-import java.util.Objects;
-import java.util.Scanner;
-import java.util.ArrayList;
+import java.time.LocalDateTime;
+import java.util.*;
 
 public class usuario implements Comparable{
     private static int numUsuarios=0;
@@ -232,6 +230,61 @@ public class usuario implements Comparable{
             if (gr.getNombre().equals(nombreGrupo)) pertenece = true;
         }
         return pertenece;
+    }
+
+
+    // Funcion para añadir en un arrayList un gasto, con los datos pasados por parametros
+    public void añadirGastos(Grupo grupo, String descripcion, double cantidad, usuario pagador) {
+        // Comprobacion de que los datos introducidos no sea nulos
+        if (grupo == null || descripcion == null || descripcion.isEmpty() || cantidad <= 0 || pagador == null) {
+            System.out.println("ERROR, datos invalidos");
+            return;
+        }
+
+        // Comprobamos que el usuario que inserta los datos sea el admin
+        if (this.getUserID() != grupo.getIdAdmin()) {
+            System.out.println("ERROR, no eres el administrador del grupo");
+            return;
+        }
+
+        // Creamos el gasto y lo añadimos al arrayList
+        Gasto gasto = new Gasto(descripcion, cantidad, pagador.getUserID());
+        grupo.getGastos().add(gasto);
+        System.out.println("Se ha añadido un gasto correctamente");
+    }
+
+    // Funcion para eliminar un gasto del arrayList
+    public void eliminarGastos(Grupo grupo, int idGasto) {
+        // Comprobamos que el grupo no sea invalido
+        if (grupo == null) {
+            System.out.println("ERROR, grupo invalido");
+            return;
+        }
+
+        // Comprobamos que sea el usuario administrador
+        if (this.getUserID() != grupo.getIdAdmin()) {
+            System.out.println("ERROR, no eres el administrador del grupo");
+            return;
+        }
+
+        // buscamos el gasto para eliminarlo (Si es que esta registrado)
+        boolean encontrado = false;
+        Iterator<Gasto> iterator = grupo.getGastos().iterator();
+        while (iterator.hasNext()){
+            Gasto gasto = iterator.next();
+            if (gasto.getId() == idGasto){
+                iterator.remove();
+                encontrado = true;
+                break;
+            }
+        }
+
+        // Comprobamos si ha podido encontrar el gasto
+        if (encontrado) {
+            System.out.println("Se ha eliminado el gasto con exito");
+        } else {
+            System.out.println("ERROR, no se ha encontrado ningun gasto con la id " + idGasto);
+        }
     }
 
 }
