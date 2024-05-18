@@ -125,17 +125,16 @@ public class usuario implements Comparable{
         Grupo nuevoGrupo= new Grupo(nombreGrupo,this.getUserID(), usuario);
 
         this.gruposPertenece.add(nuevoGrupo);
-        System.out.println("Grupo '" + nombreGrupo + "' creado por " + usuario);
+        System.out.println("Grupo '" + nombreGrupo + "' creado por " + this.getName());
     }
 
     //Eliminar Grupo
     public void eliminarGrupo(usuario usuario) {
-        Scanner sc = new Scanner(System.in);
         int id;
         System.out.println("Id del grupo que quieres eliminar");
-        id = sc.nextInt();
+        id = (int)leerNum();
         gruposPertenece.remove(id);
-        System.out.println("Grupo '" + id + "' eliminado por " + usuario);
+        System.out.println("Grupo '" + id + "' eliminado por " + usuario.getName());
     }
 
     //Funcion verGrupos

@@ -42,3 +42,7 @@ y negativos y ya debería estar bien. Añadir formato cadena.
 14-5-24
 Terminado extra 2. Que puto asco de vida: Funciona perfectamente si no hay numeros periosicos. Evitar los 3
 Falta el main y la clase de bases de datos si se acaba haciendo
+
+18-05
+Main avanzado
+Main avanzado aun mas
