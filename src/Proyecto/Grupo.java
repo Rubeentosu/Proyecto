@@ -84,6 +84,19 @@ public class Grupo {
                 '}';
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Grupo grupo = (Grupo) o;
+        return idGrupo == grupo.idGrupo;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(idGrupo, nombre, idAdmin, gastos, componentes);
+    }
+
     //Función que devuelve un mapa con el miembro del grupo y la cantidad que debe
     public Map<usuario, Double> verSaldo(){
         //Calculamos la media, lo que en teoría debe pagar cada uno
@@ -104,6 +117,7 @@ public class Grupo {
         double menorDeuda=(-1)*Double.MAX_VALUE;
         double menorEnElQueCabe=Double.MAX_VALUE;
         Map<usuario, Double> saldos= verSaldo(); //Creamos el mapa con los saldos de cada usuario
+        eliminarCeros(saldos);
         //Mientras alguien con deudas
         while(saldos.size()>1){
             menorDeuda=(-1)*Double.MAX_VALUE;
@@ -125,15 +139,10 @@ public class Grupo {
             //Una vez tenemos la cantidad a abonar y a la cantidad a la que se le suma, debemos sacar los usuarios que tienen los valores
             double d1=menorDeuda;
             double d2 = menorEnElQueCabe;
-            System.out.println(menorEnElQueCabe);
-            System.out.println(menorDeuda);
             usuario repartidor = null;
-
 
             //Si el pagador puede darle toda la cantidad del tiron a otro, hacemos:
             if (d2 != Double.MAX_VALUE){
-
-
                 usuario pagador = saldos.entrySet().stream()
                         .filter(entrada -> entrada.getValue().equals(d1))
                         .findFirst().get().getKey();
@@ -175,12 +184,8 @@ public class Grupo {
                         saldos.put(repartidor,0.0);
                         saldos.put(recibe, saldos.get(repartidor) + saldos.get(recibe));
                     }
-
-
                 }while(saldos.get(repartidor) != 0.0);
-
             }
-
             eliminarCeros(saldos);
         }
         return cadena;

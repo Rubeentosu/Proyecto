@@ -128,13 +128,15 @@ public class usuario implements Comparable{
         System.out.println("Grupo '" + nombreGrupo + "' creado por " + this.getName());
     }
 
-    //Eliminar Grupo
-    public void eliminarGrupo(usuario usuario) {
-        int id;
-        System.out.println("Id del grupo que quieres eliminar");
-        id = (int)leerNum();
-        gruposPertenece.remove(id);
-        System.out.println("Grupo '" + id + "' eliminado por " + usuario.getName());
+    //Eliminar Grupo. Elimina el grupo de todas las listas de grupo de cada miembro
+    public void eliminarGrupo(usuario user, Grupo grupo) {
+        if(user.getUserID()==grupo.getIdAdmin()){
+            for (usuario u : grupo.getComponentes()){
+                u.getGruposPertenece().remove(grupo);
+            }
+        }else{
+            throw new RuntimeException("Usted no es el administrador del grupo");
+        }
     }
 
     //Funcion verGrupos
@@ -240,12 +242,6 @@ public class usuario implements Comparable{
             return;
         }
 
-        // Comprobamos que el usuario que inserta los datos sea el admin
-        if (this.getUserID() != grupo.getIdAdmin()) {
-            System.out.println("ERROR, no eres el administrador del grupo");
-            return;
-        }
-
         // Creamos el gasto y lo añadimos al arrayList
         Gasto gasto = new Gasto(descripcion, cantidad, pagador.getUserID());
         grupo.getGastos().add(gasto);
@@ -257,12 +253,6 @@ public class usuario implements Comparable{
         // Comprobamos que el grupo no sea invalido
         if (grupo == null) {
             System.out.println("ERROR, grupo invalido");
-            return;
-        }
-
-        // Comprobamos que sea el usuario administrador
-        if (this.getUserID() != grupo.getIdAdmin()) {
-            System.out.println("ERROR, no eres el administrador del grupo");
             return;
         }
 

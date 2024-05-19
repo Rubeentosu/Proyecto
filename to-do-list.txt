@@ -46,3 +46,14 @@ Falta el main y la clase de bases de datos si se acaba haciendo
 18-05
 Main avanzado
 Main avanzado aun mas
+
+19-05
+Main joder
+Eliminado en las funciones de añadir gastos y eliminar gastos la comprobación de que el que lo haga sea admin
+
+20-05
+Terminado el puto main de los huevos
+TERMINADO FUNCIONA JODER
+Modificada función eliminar grupo para que se eliminen tambien de las listas de cada usuario
+Solo me queda comentarlo.
+Documentación, diagramas de clases/usos y presentación

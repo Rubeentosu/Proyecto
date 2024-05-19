@@ -5,7 +5,6 @@ import java.util.*;
 
 public class Main {
 
-
     //función que lee una cadena
     public static String leerCadena(){
         Scanner sc = new Scanner(System.in);
@@ -99,15 +98,146 @@ public class Main {
     }
     public static void menuGrupo(ArrayList<usuario> lista, int indexU, int indexG){
         System.out.println("Grupo: " + lista.get(indexU).getGruposPertenece().get(indexG).getNombre());
-        imprimirMenuGrupo(lista, indexU, indexG);
+        boolean salir = false;
+        int opcion = -1;
+        do{
+            imprimirMenuGrupo(lista, indexU, indexG);
+            opcion=leerNum();
+            if (lista.get(indexU).getUserID()==lista.get(indexU).getGruposPertenece().get(indexG).getIdAdmin()){
+                switch (opcion){
+                    case 1:
+                        addGasto(lista, indexU, indexG);
+                        break;
+                    case 2:
+                        eliminarGasto(lista, indexU, indexG);
+                        break;
+                    case 3:
+                        imprimirSaldos(lista.get(indexU).getGruposPertenece().get(indexG).verSaldo());
+                        break;
+                    case 4:
+                        System.out.println(lista.get(indexU).getGruposPertenece().get(indexG).ajusteDeCuentas());
+                        break;
+                    case 5:
+                        añadirUsuario(lista, indexU, indexG);
+                        break;
+                    case 6:
+                        System.out.println("¿Estás seguro/a de que deseas eliminar este grupo?");
+                        System.out.println("1.- Si");
+                        System.out.println("2.- No");
+                        int o2= leerNum();
+                        if (o2==1){
+                            try{
+                                lista.get(indexU).eliminarGrupo(lista.get(indexU), lista.get(indexU).getGruposPertenece().get(indexG));
+                            }catch (RuntimeException e){
+                                System.out.println(e.getMessage());
+                            }
+                        } else if (o2!=2 && o2!=1) {
+                            System.out.println("Seleccione una opción válida");
+                        }
+                        salir=true;
+                    case 7:
+                        salir=true;
+                        break;
+                    default:
+                        System.out.println("Seleccione una opción válida");
+                        break;
+                }
+            }else{
+                switch (opcion){
+                    case 1:
+                        addGasto(lista, indexU, indexG);
+                        break;
+                    case 2:
+                        eliminarGasto(lista, indexU, indexG);
+                        break;
+                    case 3:
+                        imprimirSaldos(lista.get(indexU).getGruposPertenece().get(indexG).verSaldo());
+                        break;
+                    case 4:
+                        System.out.println(lista.get(indexU).getGruposPertenece().get(indexG).ajusteDeCuentas());
+                        break;
+                    case 5:
+                        salir=true;
+                        break;
+                    default:
+                        System.out.println("Seleccione una opción válida");
+                        break;
+                }
+            }
+        }while(!salir);
 
     }
     public static void imprimirMenuGrupo(ArrayList<usuario> lista, int indexU, int indexG){
         if (lista.get(indexU).getUserID() - lista.get(indexU).getGruposPertenece().get(indexG).getIdAdmin()==0){
-            System.out.println("eres el admin");
+            System.out.println("Eres el Administrador de este grupo");
+            System.out.println("Seleccione una acción:");
+            System.out.println("1.- Añadir un gasto");
+            System.out.println("2.- Eliminar un gasto");
+            System.out.println("3.- Ver saldos");
+            System.out.println("4.- Ajustar cuentas");
+            System.out.println("5.- Añadir usuario");
+            System.out.println("6.- Eliminar grupo");
+            System.out.println("7.- Salir");
+
         }else{
-            System.out.println("no eres el admin");
+            System.out.println("Seleccione una acción:");
+            System.out.println("1.- Añadir un gasto");
+            System.out.println("2.- Eliminar un gasto");
+            System.out.println("3.- Ver saldos");
+            System.out.println("4.- Ajustar cuentas");
+            System.out.println("5.- Salir");
         }
+    }
+    //Función para añadir un gasto
+    public static void addGasto(ArrayList<usuario> lista, int indexU, int indexG){
+        System.out.println("Escriba la descripción del gasto");
+        String des = leerCadena();
+        System.out.println("Introduzca el importe total");
+        double cantidad = leerDouble();
+        lista.get(indexU).añadirGastos(lista.get(indexU).getGruposPertenece().get(indexG), des, cantidad, lista.get(indexU));
+    }
+
+    //Función que le imprime al usuario sus gastos, para elegir cual de ellos puede eliminar. Lo pide y lo elimina
+    public static void eliminarGasto(ArrayList<usuario> lista, int indexU, int indexG){
+        int opcion = -1;
+        boolean salir=false;
+        int contador = 1;
+
+        System.out.println("Seleccione el gasto que desea eliminar");
+        List<Gasto> gastosUsuario = lista.get(indexU).getGruposPertenece().get(indexG).getGastos().stream()
+                .filter(g -> g.getPagador()==lista.get(indexU).getUserID())
+                .toList();
+        for (Gasto g: gastosUsuario){
+            System.out.println(contador+" .- "+g);
+            contador++;
+        }
+        System.out.println(contador+" .- Salir");
+        do{
+            opcion=leerNum()-1;
+            if (opcion<0 || opcion>gastosUsuario.size()){
+                System.out.println("Seleccione una opción válida");
+            }else if (opcion==gastosUsuario.size()) {
+                salir=true;
+            }else{
+                lista.get(indexU).eliminarGastos(lista.get(indexU).getGruposPertenece().get(indexG), gastosUsuario.get(opcion).getId());
+                salir=true;
+            }
+        }while (!salir);
+    }
+    //Función que imprime el mapa de los gastos de forma bonita
+    public static void imprimirSaldos (Map<usuario, Double> saldo){
+        saldo.entrySet().forEach(entrada -> System.out.println(entrada.getKey().getName() + "---->" + entrada.getValue()));
+    }
+    //Función de administrador que añade un usuario a un grupo
+    public static void añadirUsuario(ArrayList<usuario> lista, int indexU, int indexG){
+        System.out.println("Escriba el nombre del usuario que desea introducir en el grupo");
+        String nombre = leerCadena();
+        if(comprobarUsuarioExiste(lista, nombre)!=-1){
+            lista.get(indexU).addUser(lista.get(indexU).getGruposPertenece().get(indexG), lista.get(comprobarUsuarioExiste(lista, nombre)),lista);
+        }else{
+            System.out.println("El usuario "+nombre+" no está registrado en nuestra base de datos");
+        }
+
     }
 
     //Inicio de sesión
@@ -158,10 +288,11 @@ public class Main {
 
     public static void main(String[] args) {
         ArrayList<usuario> usuarios = new ArrayList<>();
-        usuarios.add(new usuario("Javi", "Javier1997"));
-        usuarios.add(new usuario("Yasir", "Yasir2005"));
-        usuarios.add(new usuario("David", "David1997"));
+        usuarios.add(new usuario("Javi", "Platano17"));
+        usuarios.add(new usuario("Rubén", "Gamba2000"));
+        usuarios.add(new usuario("Adrian", "Mandarina1"));
         usuarios.add(new usuario("Mikel", "Javier1997"));
+        usuarios.add(new usuario("Carmen", "Javier1997"));
 
 
         usuarios.get(0).crearGrupo(usuarios.get(0));
@@ -173,31 +304,6 @@ public class Main {
         usuarios.get(0).addUser(usuarios.get(0).getGruposPertenece().get(0),usuarios.get(3), usuarios);
 
 
-        /*
-        System.out.println(usuarios.get(0).getGruposPertenece());
-        System.out.println(usuarios.get(1).getGruposPertenece());
-        usuarios.get(0).eliminarGrupo(usuarios.get(0));
-        System.out.println(usuarios.get(0).getGruposPertenece());
-        System.out.println(usuarios.get(1).getGruposPertenece());
-
-        System.out.println("El grupo 1 está compuesto por"+usuarios.get(0).getGruposPertenece().get(0).getComponentes());
-        System.out.println("Yasir pertenece al grupo" +usuarios.get(1).getGruposPertenece());
-        //usuarios.get(0).eliminarUsuario(usuarios.get(0).getGruposPertenece().get(0),usuarios.get(1), usuarios);
-        System.out.println("El grupo 1 está compuesto por"+usuarios.get(0).getGruposPertenece().get(0).getComponentes());
-
-        usuarios.get(0).añadirGastos(usuarios.get(0).getGruposPertenece().get(0),"gasto1",25, usuarios.get(0));
-        usuarios.get(0).añadirGastos(usuarios.get(0).getGruposPertenece().get(0),"gasto3",40, usuarios.get(1));
-        usuarios.get(0).añadirGastos(usuarios.get(0).getGruposPertenece().get(0),"gasto6",7, usuarios.get(2));
-        usuarios.get(0).añadirGastos(usuarios.get(0).getGruposPertenece().get(0),"gasto4",2, usuarios.get(2));
-        System.out.println(usuarios.get(0).getGruposPertenece().get(0).getGastos());
-
-        Map<usuario, Double> saldos  = usuarios.get(0).getGruposPertenece().get(0).verSaldo();
-
-        System.out.println("El gasto medio es "+ usuarios.get(0).getGruposPertenece().get(0).gastoMedio());
-
-        System.out.println(saldos);
-        System.out.println(usuarios.get(0).getGruposPertenece().get(0).ajusteDeCuentas());
-        */
         boolean salir = false;
         int opcion1=10;
         int opcion2=10;
@@ -219,12 +325,9 @@ public class Main {
                     try{
                         index = registrarUsuario(usuarios);
                         menuUsuario(usuarios, index);
-
                     }catch(ArrayStoreException e){
                         System.out.println(e.getMessage());
                     }
-
-
                     break;
                 case 3:
                     System.out.println("Hasta la próxima");
@@ -232,9 +335,8 @@ public class Main {
                     break;
                 default:
                     System.out.println("Escriba una opción válida");
+                    break;
             }
         }while(!salir);
-
-
     }
 }
