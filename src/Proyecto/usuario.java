@@ -108,7 +108,7 @@ public class usuario implements Comparable{
             }
             if (lowerCase && upperCase && num && space) {
                 return true;
-            } else {
+            } else {//Si no se cumple una condición, lanzamos error
                 if (!lowerCase) throw new ArithmeticException("No hay ninguna letra minúscula");
                 else if (!upperCase) throw new InputMismatchException("No hay ninguna letra mayúscula");
                 else if (!num) throw new ArrayIndexOutOfBoundsException("No hay ningún número");
@@ -121,21 +121,25 @@ public class usuario implements Comparable{
     public void crearGrupo(usuario usuario){
         System.out.println("Ingrese el nombre del grupo: ");
         String nombreGrupo = leerCadena();
-
-        Grupo nuevoGrupo= new Grupo(nombreGrupo,this.getUserID(), usuario);
-
+        //Creamos el grupo, con el usuario como administrador
+        Grupo nuevoGrupo= new Grupo(nombreGrupo, usuario);
+        //Añadimos el grupo a la lista de grupos a los que pertenece
         this.gruposPertenece.add(nuevoGrupo);
-        System.out.println("Grupo '" + nombreGrupo + "' creado por " + usuario);
+        //Imprimimos la confirmación de que el grupo se ha creado
+        System.out.println("Grupo '" + nombreGrupo + "' creado por " + this.getName());
     }
 
-    //Eliminar Grupo
-    public void eliminarGrupo(usuario usuario) {
-        Scanner sc = new Scanner(System.in);
-        int id;
-        System.out.println("Id del grupo que quieres eliminar");
-        id = sc.nextInt();
-        gruposPertenece.remove(id);
-        System.out.println("Grupo '" + id + "' eliminado por " + usuario);
+    //Eliminar Grupo. Elimina el grupo de todas las listas de grupo de cada miembro
+    public void eliminarGrupo(usuario user, Grupo grupo) {
+        //Comrobamos que el admin ejecuta la accion
+        if(user.getUserID()==grupo.getIdAdmin()){
+            //Eliminamos el grupo de la lista de grupos a los que pertenece de cada usuario del grupo
+            for (usuario u : grupo.getComponentes()){
+                u.getGruposPertenece().remove(grupo);
+            }
+        }else{
+            throw new RuntimeException("Usted no es el administrador del grupo");
+        }
     }
 
     //Funcion verGrupos
@@ -203,26 +207,6 @@ public class usuario implements Comparable{
         return sc.nextLine();
     }
 
-    //Función que lee un double
-    public static double leerNum(){
-        Scanner sc = new Scanner(System.in);
-        double num = 0;
-        boolean error;
-        do{
-            error= false;
-            try{
-                num= sc.nextDouble();
-                error=false;
-            }catch (NumberFormatException e){
-                error = true;
-                System.out.println("Introduzca un número");
-            }finally {
-                sc.nextLine();
-            }
-        }while (error);
-        return num;
-    }
-
     //Función que comprueba si una id de un grupo pertenece a un grupo en el que está dentro el usuario
     public boolean usuarioPerteneceGrupo (String nombreGrupo){
         boolean pertenece = false;
@@ -241,12 +225,6 @@ public class usuario implements Comparable{
             return;
         }
 
-        // Comprobamos que el usuario que inserta los datos sea el admin
-        if (this.getUserID() != grupo.getIdAdmin()) {
-            System.out.println("ERROR, no eres el administrador del grupo");
-            return;
-        }
-
         // Creamos el gasto y lo añadimos al arrayList
         Gasto gasto = new Gasto(descripcion, cantidad, pagador.getUserID());
         grupo.getGastos().add(gasto);
@@ -258,12 +236,6 @@ public class usuario implements Comparable{
         // Comprobamos que el grupo no sea invalido
         if (grupo == null) {
             System.out.println("ERROR, grupo invalido");
-            return;
-        }
-
-        // Comprobamos que sea el usuario administrador
-        if (this.getUserID() != grupo.getIdAdmin()) {
-            System.out.println("ERROR, no eres el administrador del grupo");
             return;
         }
 

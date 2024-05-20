@@ -6,6 +6,7 @@ import java.util.*;
 import java.util.function.DoubleToIntFunction;
 
 public class Grupo {
+
     private static int contadorGrupos =0;
     private int idGrupo;
     private String nombre;
@@ -14,13 +15,12 @@ public class Grupo {
     private ArrayList<Gasto> gastos;
     private ArrayList<usuario> componentes;
 
-
-
-    public Grupo(String nombre, int idUsuario, usuario admin) {
+    //Constructor
+    public Grupo(String nombre, usuario admin) {
         contadorGrupos++;
         this.idGrupo=contadorGrupos;
         this.nombre = nombre;
-        this.idAdmin = idUsuario;
+        this.idAdmin = admin.getUserID();
         gastos = new ArrayList<>();
         componentes = new ArrayList<>();
         componentes.add(admin);
@@ -75,6 +75,7 @@ public class Grupo {
         this.componentes = componentes;
     }
 
+    //Método to-String
     @Override
     public String toString() {
         return "Grupo{" +
@@ -82,6 +83,20 @@ public class Grupo {
                 ", nombre='" + nombre + '\'' +
                 ", administrador=" + idAdmin +
                 '}';
+    }
+
+    //Equals y HashCode
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Grupo grupo = (Grupo) o;
+        return idGrupo == grupo.idGrupo;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(idGrupo, nombre, idAdmin, gastos, componentes);
     }
 
     //Función que devuelve un mapa con el miembro del grupo y la cantidad que debe
@@ -99,11 +114,12 @@ public class Grupo {
     }
 
     //Función que nos imprime el dinero que le tiene que dar quien a quien para igualar las cuentas
-    public String ajusteDeCuentas(){
+    public String ajusteDeCuentas(int i){
         String cadena="";
         double menorDeuda=(-1)*Double.MAX_VALUE;
         double menorEnElQueCabe=Double.MAX_VALUE;
         Map<usuario, Double> saldos= verSaldo(); //Creamos el mapa con los saldos de cada usuario
+        eliminarCeros(saldos);
         //Mientras alguien con deudas
         while(saldos.size()>1){
             menorDeuda=(-1)*Double.MAX_VALUE;
@@ -116,31 +132,39 @@ public class Grupo {
 
             }
             //una vez tengamos el valor, buscamos la persona que deba recibir dinero, con la cantidad de dinero
-            //más pequeña que nos permita meter la cantidad anterior
-            for (Double n : saldos.values()){
-                if(n>0 && n<menorEnElQueCabe && (n+menorDeuda)>=0) menorEnElQueCabe=n;
-
+            //más pequeña que nos permita meter la cantidad anterior.
+            //Debido a un error a la hora de gestionar e igualar numeros Double periodicos en java, hay dos variaciones de esta función
+            //La primera, totalmente exacta, pero propensa a errores si hay números periódicos, y la segunda, permite que se pierdan
+            //Centimos al repartir, pero nunca falla. Se le mete el numero por parámetro a la función para ver en que versión estamos,
+            //Gestionado por el try-catch del main
+            if(i==0) {
+                for (Double n : saldos.values()) {
+                    if (n > 0 && n < menorEnElQueCabe && n + menorDeuda >= 0) menorEnElQueCabe = n;
+                }
+            } else if (i==1) {
+                for (Double n : saldos.values()) {
+                    if(n>0 && n<menorEnElQueCabe && Math.round(n+menorDeuda)>=0) menorEnElQueCabe=n;
+                }
             }
+
 
             //Una vez tenemos la cantidad a abonar y a la cantidad a la que se le suma, debemos sacar los usuarios que tienen los valores
             double d1=menorDeuda;
             double d2 = menorEnElQueCabe;
-            System.out.println(menorEnElQueCabe);
-            System.out.println(menorDeuda);
             usuario repartidor = null;
-
+            System.out.println(menorDeuda);
+            System.out.println(menorEnElQueCabe);
 
             //Si el pagador puede darle toda la cantidad del tiron a otro, hacemos:
             if (d2 != Double.MAX_VALUE){
-
-
                 usuario pagador = saldos.entrySet().stream()
                         .filter(entrada -> entrada.getValue().equals(d1))
                         .findFirst().get().getKey();
 
                 usuario pagado = saldos.entrySet().stream()
-                        .filter(entrada -> entrada.getValue().equals(d2))
-                        .findFirst().get().getKey();
+                            .filter(entrada -> entrada.getValue().equals(d2))
+                            .findFirst().get().getKey();
+
 
                 //Metemos en la cadena los valores
                 cadena = cadena + pagador.getName()+" paga " + menorDeuda*(-1) + " a ------> " + pagado.getName() + "\n";
@@ -160,6 +184,7 @@ public class Grupo {
                 //Con un do-while, mientras que siga teniendo deuda, irá repartiendo entre los siguientes que tengan que recibir dinero
                 do{
                     //Buscamos el primer usuario que tenga que recibir dinero
+
                     usuario recibe = saldos.entrySet().stream()
                             .filter( u -> u.getValue() > 0.0)
                             .findFirst().get().getKey();
@@ -175,12 +200,8 @@ public class Grupo {
                         saldos.put(repartidor,0.0);
                         saldos.put(recibe, saldos.get(repartidor) + saldos.get(recibe));
                     }
-
-
                 }while(saldos.get(repartidor) != 0.0);
-
             }
-
             eliminarCeros(saldos);
         }
         return cadena;
