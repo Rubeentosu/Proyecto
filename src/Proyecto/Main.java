@@ -62,13 +62,15 @@ public class Main {
 
     public static void imprimirMenuUsuario( ArrayList<usuario> lista, int index){
         System.out.println("BIENVENIDO " + lista.get(index).getName() + "!");
+        //si no pertenece a ningún grupo, mostramos este menu
         if (lista.get(index).getGruposPertenece().isEmpty()){
             System.out.println("Aún no perteneces a ningún grupo. Seleccione una opción:");
             System.out.println("1.- Crear nuevo grupo");
             System.out.println("2.- Salir");
-        }else{
+        }else{//Si tiene grupos, mostramos menu con los grupos y la opción de crear más o salir
             System.out.println("Seleccione el número del grupo que desea gestionar");
             int i = 0;
+            //Imprimimos la lista de grupos a los que pertenece el usuario que ha iniciado sesión
             for (int j=i; j < lista.get(index).getGruposPertenece().size(); j++) {
                 System.out.println(j+1 + ".- "+lista.get(index).getGruposPertenece().get(j).getNombre());
                 i=j+2;
@@ -115,7 +117,11 @@ public class Main {
                         imprimirSaldos(lista.get(indexU).getGruposPertenece().get(indexG).verSaldo());
                         break;
                     case 4:
-                        System.out.println(lista.get(indexU).getGruposPertenece().get(indexG).ajusteDeCuentas());
+                        try{
+                            System.out.println(lista.get(0).getGruposPertenece().get(0).ajusteDeCuentas(0));
+                        }catch (NoSuchElementException e){
+                            System.out.println(lista.get(0).getGruposPertenece().get(0).ajusteDeCuentas(1));
+                        }
                         break;
                     case 5:
                         añadirUsuario(lista, indexU, indexG);
@@ -154,7 +160,11 @@ public class Main {
                         imprimirSaldos(lista.get(indexU).getGruposPertenece().get(indexG).verSaldo());
                         break;
                     case 4:
-                        System.out.println(lista.get(indexU).getGruposPertenece().get(indexG).ajusteDeCuentas());
+                        try{
+                            System.out.println(lista.get(0).getGruposPertenece().get(0).ajusteDeCuentas(0));
+                        }catch (NoSuchElementException e){
+                            System.out.println(lista.get(0).getGruposPertenece().get(0).ajusteDeCuentas(1));
+                        }
                         break;
                     case 5:
                         salir=true;
@@ -302,6 +312,11 @@ public class Main {
         usuarios.get(0).addUser(usuarios.get(0).getGruposPertenece().get(0),usuarios.get(1), usuarios);
         usuarios.get(0).addUser(usuarios.get(0).getGruposPertenece().get(0),usuarios.get(2), usuarios);
         usuarios.get(0).addUser(usuarios.get(0).getGruposPertenece().get(0),usuarios.get(3), usuarios);
+        usuarios.get(0).addUser(usuarios.get(0).getGruposPertenece().get(0),usuarios.get(4), usuarios);
+        usuarios.get(0).añadirGastos(usuarios.get(0).getGruposPertenece().get(0),"gasto1", 17, usuarios.get(0));
+        System.out.println(usuarios.get(0).getGruposPertenece().get(0).verSaldo());
+
+
 
 
         boolean salir = false;

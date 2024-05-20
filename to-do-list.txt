@@ -57,3 +57,4 @@ TERMINADO FUNCIONA JODER
 Modificada función eliminar grupo para que se eliminen tambien de las listas de cada usuario
 Solo me queda comentarlo.
 Documentación, diagramas de clases/usos y presentación
+Comentado y arreglado función ajustar cuentas. Control de errores
