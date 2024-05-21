@@ -79,10 +79,12 @@ public class Main {
             System.out.println(i+1+".- Salir");
         }
     }
-
+    //Menú de usuario una vez autentificado
     public static void menuUsuario(ArrayList<usuario> lista, int index){
         int opcion = -1;
         boolean salir = false;
+        //Al ser opcion unos numeros variables dependiendo del numero del grupos a los que pertenezca
+        //el usuario, lo hacemos con ifs en vez de wtich
             do{
                 imprimirMenuUsuario(lista, index);
                 opcion=leerNum()-1;
@@ -214,14 +216,17 @@ public class Main {
         int contador = 1;
 
         System.out.println("Seleccione el gasto que desea eliminar");
+        //Creamos una lita con los gastos
         List<Gasto> gastosUsuario = lista.get(indexU).getGruposPertenece().get(indexG).getGastos().stream()
                 .filter(g -> g.getPagador()==lista.get(indexU).getUserID())
                 .toList();
+        //Los imprimimos numerados
         for (Gasto g: gastosUsuario){
             System.out.println(contador+" .- "+g);
             contador++;
         }
         System.out.println(contador+" .- Salir");
+        //Al ser un número variable, no podemos hacer switch, hacemos ifs
         do{
             opcion=leerNum()-1;
             if (opcion<0 || opcion>gastosUsuario.size()){
@@ -242,6 +247,7 @@ public class Main {
     public static void añadirUsuario(ArrayList<usuario> lista, int indexU, int indexG){
         System.out.println("Escriba el nombre del usuario que desea introducir en el grupo");
         String nombre = leerCadena();
+        //Comprobamos que existe (Si la función que comprueba no encuentra un usario, devuelve -1)
         if(comprobarUsuarioExiste(lista, nombre)!=-1){
             lista.get(indexU).addUser(lista.get(indexU).getGruposPertenece().get(indexG), lista.get(comprobarUsuarioExiste(lista, nombre)),lista);
         }else{
@@ -254,15 +260,18 @@ public class Main {
     public static int inicioSesion(ArrayList<usuario> lista){
         System.out.println("Introduzca su nombre de usuario");
         String nombreUsuario = leerCadena();
+        //Comprobamos que existe
         if(comprobarUsuarioExiste(lista, nombreUsuario)==-1){
             throw new ArrayStoreException("No existe ningún usuario con ese nombre");
         }
         System.out.println("Introduzca la contraseña");
         String pass = leerCadena();
+        //Sacamos su posición del array
         int index = comprobarUsuarioExiste(lista, nombreUsuario);
         if (!lista.get(index).getPass().equals(pass)){
             throw new InputMismatchException("La contraseña introducida no es correcta");
         }
+        //Devolvemos el index
         return index;
     }
 
@@ -270,12 +279,14 @@ public class Main {
     public static int registrarUsuario(ArrayList<usuario> lista){
         System.out.println("Introduzca el nombre de usuario que desea");
         String nombreUsuario = leerCadena();
+        //Comprobamos si existe
         if(comprobarUsuarioExiste(lista, nombreUsuario)!=-1){
             throw new ArrayStoreException("Ya existe un usuario con ese nombre");
         }
         System.out.println("Introduzca la contraseña");
         String pass = leerCadena();
         int index = 0;
+        //Creamos usuario
         try{
             usuario u = new usuario(nombreUsuario, pass);
             lista.add(u);
@@ -283,6 +294,7 @@ public class Main {
         }catch (Exception e) {
             System.out.println(e.getMessage());
         }
+        //Devolvemos su index
         return index;
     }
 
