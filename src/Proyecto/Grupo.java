@@ -115,7 +115,9 @@ public class Grupo {
 
     //Función que nos imprime el dinero que le tiene que dar quien a quien para igualar las cuentas
     public String ajusteDeCuentas(int i){
+        //Creamos la cadena
         String cadena="";
+        //Creamos valores donde depositaremos los valores de deuda donde trabajaremos
         double menorDeuda=(-1)*Double.MAX_VALUE;
         double menorEnElQueCabe=Double.MAX_VALUE;
         Map<usuario, Double> saldos= verSaldo(); //Creamos el mapa con los saldos de cada usuario
@@ -131,12 +133,13 @@ public class Grupo {
                 if(n<0 && n>menorDeuda) menorDeuda=n;
 
             }
-            //una vez tengamos el valor, buscamos la persona que deba recibir dinero, con la cantidad de dinero
-            //más pequeña que nos permita meter la cantidad anterior.
-            //Debido a un error a la hora de gestionar e igualar numeros Double periodicos en java, hay dos variaciones de esta función
-            //La primera, totalmente exacta, pero propensa a errores si hay números periódicos, y la segunda, permite que se pierdan
-            //Centimos al repartir, pero nunca falla. Se le mete el numero por parámetro a la función para ver en que versión estamos,
-            //Gestionado por el try-catch del main
+            /*
+            una vez tengamos el valor, buscamos la persona que deba recibir dinero, con la cantidad de dinero
+            más pequeña que nos permita meter la cantidad anterior.
+            Debido a un error a la hora de gestionar e igualar numeros Double periodicos en java, hay dos variaciones de esta función
+            La primera, totalmente exacta, pero propensa a errores si hay números periódicos, y la segunda, permite que se pierdan
+            Centimos al repartir, pero nunca falla. Se le mete el numero por parámetro a la función para ver en que versión estamos,
+            Gestionado por el try-catch del main*/
             if(i==0) {
                 for (Double n : saldos.values()) {
                     if (n > 0 && n < menorEnElQueCabe && n + menorDeuda >= 0) menorEnElQueCabe = n;
@@ -148,14 +151,16 @@ public class Grupo {
             }
 
 
-            //Una vez tenemos la cantidad a abonar y a la cantidad a la que se le suma, debemos sacar los usuarios que tienen los valores
+            /*Una vez tenemos la cantidad a abonar y a la cantidad a la que se le suma, debemos sacar
+            los usuarios que tienen los valores*/
             double d1=menorDeuda;
             double d2 = menorEnElQueCabe;
             usuario repartidor = null;
             System.out.println(menorDeuda);
             System.out.println(menorEnElQueCabe);
 
-            //Si el pagador puede darle toda la cantidad del tiron a otro, hacemos:
+
+            //Si el pagador puede darle toda la cantidad del tiron a otro, lo hacemos:
             if (d2 != Double.MAX_VALUE){
                 usuario pagador = saldos.entrySet().stream()
                         .filter(entrada -> entrada.getValue().equals(d1))
@@ -184,7 +189,6 @@ public class Grupo {
                 //Con un do-while, mientras que siga teniendo deuda, irá repartiendo entre los siguientes que tengan que recibir dinero
                 do{
                     //Buscamos el primer usuario que tenga que recibir dinero
-
                     usuario recibe = saldos.entrySet().stream()
                             .filter( u -> u.getValue() > 0.0)
                             .findFirst().get().getKey();
@@ -204,16 +208,17 @@ public class Grupo {
             }
             eliminarCeros(saldos);
         }
+        //Devolvemos la cadena
         return cadena;
     }
 
     //Función que elimina del mapa de deudas todos aquellas claves que tengan un saldo/deuda de 0
     public void eliminarCeros(Map<usuario, Double> mapa){
-        Iterator<Map.Entry<usuario, Double>> it = mapa.entrySet().iterator();
+        Iterator<Map.Entry<usuario, Double>> it = mapa.entrySet().iterator();//Creamos iterador
         while (it.hasNext()){
             Map.Entry<usuario,Double> entrada = it.next();
-            if(entrada.getValue().equals(0.0)){
-                it.remove();
+            if(entrada.getValue().equals(0.0)){//Si su saldo es 0
+                it.remove();//Lo eliminamos
             }
         }
     }
