@@ -84,10 +84,10 @@ public class Main {
         int opcion = -1;
         boolean salir = false;
         //Al ser opcion unos numeros variables dependiendo del numero del grupos a los que pertenezca
-        //el usuario, lo hacemos con ifs en vez de wtich
+        //el usuario, lo hacemos con ifs en vez de swtich
             do{
                 imprimirMenuUsuario(lista, index);
-                opcion=leerNum()-1;
+                opcion=leerNum()-1;//Le restamos uno porque el indice 0 del array está como opción 1
                 if(opcion==lista.get(index).getGruposPertenece().size()){
                     lista.get(index).crearGrupo(lista.get(index));
                 }else if (opcion==lista.get(index).getGruposPertenece().size()+1){
@@ -285,7 +285,7 @@ public class Main {
         }
         System.out.println("Introduzca la contraseña");
         String pass = leerCadena();
-        int index = 0;
+        int index = -1;
         //Creamos usuario
         try{
             usuario u = new usuario(nombreUsuario, pass);
@@ -330,17 +330,16 @@ public class Main {
 
 
 
-
+        //Aplicación principal
         boolean salir = false;
-        int opcion1=10;
-        int opcion2=10;
-        int index;
-
+        int opcion1=-1;
+        int index=-1;
+        //Menú
         do{
             imprimirMenuInicio();
             opcion1=leerNum();
             switch (opcion1){
-                case 1:
+                case 1://Iniciar Sesión
                     try{
                         index = inicioSesion(usuarios);
                         menuUsuario(usuarios, index);
@@ -348,15 +347,17 @@ public class Main {
                         System.out.println(e.getMessage());
                     }
                     break;
-                case 2:
+                case 2://Registrar Usuario
                     try{
                         index = registrarUsuario(usuarios);
-                        menuUsuario(usuarios, index);
-                    }catch(ArrayStoreException e){
+                        if(index!=-1){//Si el index es el valor por defecto(al no crear usuario)
+                            menuUsuario(usuarios, index);
+                        }
+                    }catch(Exception e){
                         System.out.println(e.getMessage());
                     }
                     break;
-                case 3:
+                case 3://Salir
                     System.out.println("Hasta la próxima");
                     salir=true;
                     break;
